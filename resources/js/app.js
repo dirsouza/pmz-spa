@@ -4,17 +4,34 @@ import Vue from "vue";
 import Vuex from "vuex";
 import BootstrapVue from "bootstrap-vue";
 import VueLaroute from 'vue-laroute';
+import VeeValidate from 'vee-validate';
+import VueI18n from 'vue-i18n';
+import validationMessages from 'vee-validate/dist/locale/pt_BR';
 
 import App from "./layout/App";
 
 Vue.use(Vuex);
 Vue.use(BootstrapVue);
+Vue.use(VueI18n);
 
-// import routes from './apiLaroute.js';
 Vue.use(VueLaroute, {
-  routes: require('./apiLaroute'),
-  accessor: '$apiLaroute', // Optional: the global variable for accessing the router
+    routes: require('./apiLaroute'),
+    accessor: '$apiLaroute', // Optional: the global variable for accessing the router
 });
+
+const i18n = new VueI18n();
+i18n.locale = "pt_BR";
+
+Vue.use(VeeValidate, {
+    inject: true,
+    fieldsBagName: 'veeFields',
+    errorBagName: 'veeErrors',
+    i18nRootKey: 'vallidations',
+    i18n,
+    dictionary: {
+        pt_BR: validationMessages
+    }
+})
 
 import StoreData from "./store";
 const store = new Vuex.Store(StoreData);

@@ -3,16 +3,19 @@
 namespace App\Services;
 
 use App\Models\Perfil;
-use Illuminate\Support\Collection;
+use Throwable;
+use Illuminate\Http\JsonResponse;
 
 class PerfilService
 {
-    /**
-     * Retorna todos os Perfis
-     * @return Collection|null
-     */
-    public function getPerfis(): ?Collection
+    public function getListaPerfis(): ?JsonResponse
     {
-        return Perfil::all();
+        try {
+            $perfis = Perfil::all();
+
+            return response()->json($perfis, 200);
+        } catch (Throwable $e) {
+            return response()->json($e->getMessage(), 500);
+        }
     }
 }

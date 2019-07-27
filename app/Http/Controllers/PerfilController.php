@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Perfil;
 use Illuminate\Http\Request;
+use App\Services\PerfilService;
 
 class PerfilController extends Controller
 {
+    private $perfilService;
+
+    public function __construct()
+    {
+        $this->perfilService = App()->make(PerfilService::class);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +21,7 @@ class PerfilController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return $this->perfilService->getListaPerfis();
     }
 
     /**

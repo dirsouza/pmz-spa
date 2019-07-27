@@ -3,17 +3,15 @@
         :id="id"
         :title="title"
         :size="size"
-        centered 
         :no-close-on-backdrop="true" 
         :no-close-on-esc="true"
         @hidden="closeModal"
     >
-        <b-container fluid>
-            <slot name="body"></slot>
-        </b-container>
-        <div slot="modal-footer" slot-scope="{cancel, ok}">
+        <slot></slot>
+        
+        <template slot="modal-footer">
             <slot name="footer"></slot>
-        </div>
+        </template>
     </b-modal>
 </template>
 <script>
