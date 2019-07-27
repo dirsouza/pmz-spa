@@ -6,13 +6,15 @@ import BootstrapVue from "bootstrap-vue";
 import VueLaroute from 'vue-laroute';
 import VeeValidate from 'vee-validate';
 import VueI18n from 'vue-i18n';
-import validationMessages from 'vee-validate/dist/locale/pt_BR';
+import VueSweetalert2 from 'vue-sweetalert2';
 
 import App from "./layout/App";
+import validationMessages from 'vee-validate/dist/locale/pt_BR';
 
 Vue.use(Vuex);
 Vue.use(BootstrapVue);
 Vue.use(VueI18n);
+Vue.use(VueSweetalert2);
 
 Vue.use(VueLaroute, {
     routes: require('./apiLaroute'),

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UsuarioService;
-use App\Services\PerfilService;
 
 class UsuarioController extends Controller
 {
@@ -27,68 +26,36 @@ class UsuarioController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Create the form for creating a new resource.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function create(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
+        return $this->usuarioService->storeUsuario($request->all());
     }
 
     /**
      * Update the specified resource in storage.
      *
+     * @param  integer $id
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(int $id, Request $request)
     {
-        //
+        return $this->usuarioService->updateUsuario($id, $request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param integer $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function delete(int $id)
     {
-        //
+        return $this->usuarioService->deleteUsuario($id);
     }
 }

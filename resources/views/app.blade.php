@@ -10,11 +10,24 @@
 
     <!-- FontAwasome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome/css/all.css') }}">
+    <!-- VueMultiselect -->
+    <link rel="stylesheet" href="{{ asset('plugins/vue-multiselect/vue-multiselect.min.css') }}">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <style>
+        .multiselect__placeholder {
+            margin-bottom: 0 !important;
+            padding-top: 0 !important;
+        }
+
+        .multiselect__tag {
+            margin-bottom: 0 !important;
+        }
+    </style>
 </head>
 
 <body>

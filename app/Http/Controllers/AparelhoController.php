@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Aparelho;
 use Illuminate\Http\Request;
 
 class AparelhoController extends Controller
@@ -18,44 +17,12 @@ class AparelhoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Create the form for creating a new resource.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Aparelho  $aparelho
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Aparelho $aparelho)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Aparelho  $aparelho
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Aparelho $aparelho)
+    public function create(Request $request)
     {
         //
     }
@@ -63,11 +30,11 @@ class AparelhoController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param  integer $id
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Aparelho  $aparelho
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Aparelho $aparelho)
+    public function update(int $id, Request $request)
     {
         //
     }
@@ -75,10 +42,10 @@ class AparelhoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Aparelho  $aparelho
+     * @param integer $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Aparelho $aparelho)
+    public function delete(int $id)
     {
         //
     }

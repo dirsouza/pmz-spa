@@ -5,6 +5,7 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
 
 mix.copy('node_modules/@fortawesome/fontawesome-free', 'public/plugins/fontawesome');
+mix.copy('node_modules/vue-multiselect/dist', 'public/plugins/vue-multiselect');
 
 mix.webpackConfig({
     plugins: [

@@ -13,6 +13,6 @@ class AparelhoService
      */
     public function getAparelhos(): ?Collection
     {
-        return Aparelho::all();
+        return Aparelho::orderBy('id', 'asc')->get();
     }
 }

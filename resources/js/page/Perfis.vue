@@ -1,7 +1,7 @@
 <template>
     <b-col md="12">
         <b-card
-            header="Lista de Usuários"
+            header="Lista de Perfis"
             header-tag="header"
             header-bg-variant="primary"
             header-text-variant="white"

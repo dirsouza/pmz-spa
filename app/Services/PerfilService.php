@@ -11,7 +11,7 @@ class PerfilService
     public function getListaPerfis(): ?JsonResponse
     {
         try {
-            $perfis = Perfil::all();
+            $perfis = Perfil::orderBy('id', 'asc')->get();
 
             return response()->json($perfis, 200);
         } catch (Throwable $e) {
