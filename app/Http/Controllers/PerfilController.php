@@ -56,4 +56,9 @@ class PerfilController extends Controller
     {
         return $this->perfilService->deletePerfil($id);
     }
+
+    public function relatorio()
+    {
+        return $this->aparelhoService->relatorioPerfil();
+    }
 }

@@ -94,4 +94,7 @@ class AparelhoService
             return response()->json($e->getMessage(), 500);
         }
     }
+
+    public function relatorioAparelho()
+    { }
 }

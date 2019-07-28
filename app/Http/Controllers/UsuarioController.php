@@ -58,4 +58,9 @@ class UsuarioController extends Controller
     {
         return $this->usuarioService->deleteUsuario($id);
     }
+
+    public function relatorio()
+    {
+        return $this->aparelhoService->relatorioUsuario();
+    }
 }

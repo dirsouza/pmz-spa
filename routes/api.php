@@ -5,6 +5,7 @@ Route::prefix('v1/usuarios')->name('usuarios.')->group(function () {
     Route::post('create', 'UsuarioController@create')->name('create');
     Route::put('update/{id}', 'UsuarioController@update')->name('update');
     Route::delete('delete/{id}', 'UsuarioController@delete')->name('delete');
+    Route::get('relatorio', 'UsuarioController@relatorio')->name('relatorio');
 });
 
 Route::prefix('v1/perfis')->name('perfis.')->group(function () {
@@ -12,6 +13,7 @@ Route::prefix('v1/perfis')->name('perfis.')->group(function () {
     Route::post('create', 'PerfilController@create')->name('create');
     Route::put('update/{id}', 'PerfilController@update')->name('update');
     Route::delete('delete/{id}', 'PerfilController@delete')->name('delete');
+    Route::get('relatorio', 'PerfilController@relatorio')->name('relatorio');
 });
 
 Route::prefix('v1/aparelhos')->name('aparelhos.')->group(function () {
@@ -19,4 +21,5 @@ Route::prefix('v1/aparelhos')->name('aparelhos.')->group(function () {
     Route::post('create', 'AparelhoController@create')->name('create');
     Route::put('update/{id}', 'AparelhoController@update')->name('update');
     Route::delete('delete/{id}', 'AparelhoController@delete')->name('delete');
+    Route::get('relatorio', 'AparelhoController@relatorio')->name('relatorio');
 });

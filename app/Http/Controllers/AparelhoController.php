@@ -56,4 +56,9 @@ class AparelhoController extends Controller
     {
         return $this->aparelhoService->deleteAparelho($id);
     }
+
+    public function relatorio()
+    {
+        return $this->aparelhoService->relatorioAparalho();
+    }
 }

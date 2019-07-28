@@ -7,10 +7,11 @@
             header-text-variant="white"
         >
             <b-container fluid>
-                <!-- Novo Registro -->
-                <novo-registro
+                <!-- Botoes -->
+                <botoes
                     @Cadastrar="cadastrar"
-                ></novo-registro>
+                    @Relatorio="relatorio"
+                ></botoes>
 
                 <!-- Tabela Usuários -->
                 <tabela
@@ -46,7 +47,7 @@
 </template>
 
 <script>
-import NovoRegistro from "../components/NovoRegistro";
+import Botoes from "../components/Botoes";
 import Tabela from "../components/usuarios/_Tabela";
 import Formulario from "../components/usuarios/_Formulario";
 import Modal from "../components/Modal";
@@ -54,7 +55,7 @@ import Modal from "../components/Modal";
 export default {
     name: "Usuarios",
     components: {
-        NovoRegistro,
+        Botoes,
         Tabela,
         Formulario,
         Modal
@@ -98,6 +99,9 @@ export default {
             };
 
             this.showModal(this.modal.id);
+        },
+        relatorio() {
+
         },
         editar(usuario) {
             this.modal = {
