@@ -31,7 +31,7 @@ class AparelhoController extends Controller
      */
     public function create(Request $request)
     {
-        //
+        return $this->aparelhoService->storeAparelho($request->all());
     }
 
     /**
@@ -43,7 +43,7 @@ class AparelhoController extends Controller
      */
     public function update(int $id, Request $request)
     {
-        //
+        return $this->aparelhoService->updateAparelho($id, $request->all());
     }
 
     /**
@@ -54,6 +54,6 @@ class AparelhoController extends Controller
      */
     public function delete(int $id)
     {
-        //
+        return $this->aparelhoService->deleteAparelho($id);
     }
 }

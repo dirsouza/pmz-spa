@@ -31,7 +31,7 @@ class PerfilController extends Controller
      */
     public function create(Request $request)
     {
-        //
+        return $this->perfilService->storePerfil($request->all());
     }
 
     /**
@@ -43,7 +43,7 @@ class PerfilController extends Controller
      */
     public function update(int $id, Request $request)
     {
-        //
+        return $this->perfilService->updatePerfil($id, $request->all());
     }
 
     /**
@@ -54,6 +54,6 @@ class PerfilController extends Controller
      */
     public function delete(int $id)
     {
-        //
+        return $this->perfilService->deletePerfil($id);
     }
 }

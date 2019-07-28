@@ -21,11 +21,8 @@ class UsuarioService
     public function getListaUsuarios(): ?JsonResponse
     {
         try {
-            $usuarios = User::with([
-                'perfis' => function ($query) {
-                    $query->orderBy('perfil_id', 'asc');
-                }
-            ])->orderBy('id', 'asc')->get();
+            $usuarios = User::with('perfis')
+                ->orderBy('id', 'asc')->get();
 
             return response()->json($usuarios, 200);
         } catch (Throwable $e) {

@@ -29,7 +29,7 @@
 
         <!-- Table -->
         <b-table
-            ref="tablePerfis"
+            ref="tableAparelhos"
             :busy.sync="isBusy"
             show-empty
             stacked="md"
@@ -49,7 +49,7 @@
                 <b-spinner class="align-middle"></b-spinner>
                 <strong>Loading...</strong>
             </div>
-            
+
             <template slot="usuarios" slot-scope="row">
                 <b-button variant="outline-primary" size="sm" v-if="row.item.usuarios.length > 0" @click="row.toggleDetails">
                     <i v-if="row.detailsShowing" class="far fa-eye-slash"></i>
@@ -110,7 +110,7 @@
 
 <script>
 export default {
-    name: "TabelaPerfis",
+    name: "TabelaAparelhos",
     props: {
         refreshTable: {
             type: Boolean,
@@ -122,8 +122,9 @@ export default {
             isBusy: false,
             items: [],
             fields: [
-                { key: "id", label: "Código", sortable: true, class: "text-center", sortDirection: "asc" },
-                { key: "nome", label: "Perfil", sortable: true },
+                { key: "id", thClass: 'd-none', tdClass: 'd-none' },
+                { key: "codigo", label: "Código", sortable: true, class: "text-center", sortDirection: "asc" },
+                { key: "descricao", label: "Descrição", sortable: true },
                 { key: "usuarios", label: "Usuários", sortable: true, filterable: true, class: "text-center" },
                 { key: "actions", label: "", sortable: true, filterable: false, class: "text-center" }
             ],
@@ -137,7 +138,7 @@ export default {
         }
     },
     created() {
-        this.getListaPerfis();
+        this.getListaAparelhos();
     },
     mounted() {
         this.totalRows = this.items.length;
@@ -156,12 +157,12 @@ export default {
         },
     },
     methods: {
-        async getListaPerfis() {
+        async getListaAparelhos() {
             try {
                 this.isBusy = true;
 
                 const response = await axios.get(
-                    this.$apiLaroute.route("perfis.index")
+                    this.$apiLaroute.route("aparelhos.index")
                 );
 
                 this.totalRows = response.data.length;
@@ -169,8 +170,8 @@ export default {
 
                 this.isBusy = false;
             } catch (e) {
-                this.$bvToast.toast("Não foi possível carregar os Perfis.", {
-                    title: "Lista de Perfis",
+                this.$bvToast.toast("Não foi possível carregar os Aparelhos.", {
+                    title: "Lista de Aparelhos",
                     variant: "danger",
                     solid: true
                 });
@@ -183,14 +184,14 @@ export default {
             this.currentPage = 1;
         },
         refresh() {
-            this.getListaPerfis();
-            this.$refs.tablePerfis.refresh();
+            this.getListaAparelhos();
+            this.$refs.tableAparelhos.refresh();
         },
-        editar(perfil) {
-            this.$emit('editar', perfil);
+        editar(aparelho) {
+            this.$emit('editar', aparelho);
         },
-        excluir(perfil) {
-            this.$emit('excluir', perfil);
+        excluir(aparelho) {
+            this.$emit('excluir', aparelho);
         },
     }
 }

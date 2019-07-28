@@ -1,7 +1,7 @@
 <template>
     <b-col md="12">
         <b-card
-            header="Lista de Usuários"
+            header="Lista de Aparelhos"
             header-tag="header"
             header-bg-variant="primary"
             header-text-variant="white"
@@ -12,7 +12,7 @@
                     @Cadastrar="cadastrar"
                 ></novo-registro>
 
-                <!-- Tabela Usuários -->
+                <!-- Tabela Aparelhos -->
                 <tabela
                     :refreshTable="refreshTable"
                     @editar="editar"
@@ -24,8 +24,9 @@
 
                     <!-- Formulário -->
                     <formulario
-                        :dadosForm="usuario"
+                        :dadosForm="aparelho"
                         :responseForm="requestForm"
+                        :limparForm="limparForm"
                         @formulario="formulario"
                     ></formulario>
 
@@ -47,12 +48,12 @@
 
 <script>
 import NovoRegistro from "../components/NovoRegistro";
-import Tabela from "../components/usuarios/_Tabela";
-import Formulario from "../components/usuarios/_Formulario";
+import Tabela from "../components/aparelhos/_Tabela";
+import Formulario from "../components/aparelhos/_Formulario";
 import Modal from "../components/Modal";
 
 export default {
-    name: "Usuarios",
+    name: "Aparelhos",
     components: {
         NovoRegistro,
         Tabela,
@@ -63,11 +64,12 @@ export default {
         return {
             refreshTable: false,
             requestForm: false,
+            limparForm: false,
             form: [],
-            usuario: [],
+            aparelho: [],
             modal: {
-                id: "addUsuario",
-                title: "Cadastrar Usuário"
+                id: "",
+                title: ""
             },
         };
     },
@@ -85,6 +87,13 @@ export default {
                     this.requestForm = false;
                 }, 100);
             }
+        },
+        limparForm(value) {
+            if (value) {
+                setTimeout(() => {
+                    this.limparForm = false;
+                }, 100);
+            }
         }
     },
     methods: {
@@ -93,25 +102,25 @@ export default {
         },
         cadastrar() {
             this.modal = {
-                id: "addUsuario",
-                title: "Cadastrar Novo Usuário"
-            };
-
-            this.showModal(this.modal.id);
-        },
-        editar(usuario) {
-            this.modal = {
-                id: "editUsuario",
-                title: "Editar Usuário"
+                id: "addAparelho",
+                title: "Cadastrar Novo Aparelho"
             };
             
-            this.usuario = usuario;
+            this.showModal(this.modal.id);
+        },
+        editar(aparelho) {
+            this.modal = {
+                id: "editAparelho",
+                title: "Editar Aparelho"
+            };
+            
+            this.aparelho = aparelho;
             
             this.showModal(this.modal.id);  
         },
-        excluir(usuario) {
+        excluir(aparelho) {
             this.$swal({
-                title: `Excluir o usuário\n${usuario.name}?`,
+                title: `Excluir o aparelho\ncódigo: ${aparelho.codigo}?`,
                 text: "Essa operação não poderá ser desfeita!",
                 type: 'warning',
                 showCancelButton: true,
@@ -121,7 +130,7 @@ export default {
                 cancelButtonText: 'Não'
             }).then((result) => {
                 if (result.value) {
-                    this.delete(usuario.id);
+                    this.delete(aparelho.id);
                 }
             });
         },
@@ -133,7 +142,7 @@ export default {
         closeModal() {
             this.$bvModal.hide(this.modal.id);
             this.limparForm = true;
-            this.usuario = [];
+            this.aparelho = [];
         },
         onSubmit() {
             this.requestForm = true;
@@ -157,19 +166,19 @@ export default {
                     return;
                 }
 
-                axios.post(this.$apiLaroute.route("usuarios.create"), this.prepareFormData())
+                axios.post(this.$apiLaroute.route("aparelhos.create"), this.prepareFormData())
                 .then(response => {
                     this.refresh();
 
-                    this.$bvToast.toast("Usuário cadastrado com sucesso!", {
-                        title: "Cadastro de Usuários",
+                    this.$bvToast.toast("Aparelho cadastrado com sucesso!", {
+                        title: "Cadastro de Aparelho",
                         variant: "success",
                         solid: true
                     });
                 })
                 .catch(error => {
-                    this.$bvToast.toast("Não foi possível cadastro o usuário.", {
-                        title: "Cadastro de Usuários",
+                    this.$bvToast.toast("Não foi possível cadastro o aparelho.", {
+                        title: "Cadastro de Aparelho",
                         variant: "danger",
                         solid: true
                     });
@@ -187,19 +196,19 @@ export default {
                 let formData = this.prepareFormData();
                     formData.append('_method', 'PUT');
 
-                axios.post(this.$apiLaroute.route("usuarios.update", { id: this.form.id }), formData)
+                axios.post(this.$apiLaroute.route("aparelhos.update", { id: this.form.id }), formData)
                 .then(response => {
                     this.refresh();
 
-                    this.$bvToast.toast("Usuário atualizado com sucesso!", {
-                        title: "Atualização de Usuários",
+                    this.$bvToast.toast("Aparelho atualizado com sucesso!", {
+                        title: "Atualização de Aparelho",
                         variant: "success",
                         solid: true
                     });
                 })
                 .catch(error => {
-                    this.$bvToast.toast("Não foi possível atualizar o usuário.", {
-                        title: "Atualização de Usuários",
+                    this.$bvToast.toast("Não foi possível atualizar o aparelho.", {
+                        title: "Atualização de Aparelho",
                         variant: "danger",
                         solid: true
                     });
@@ -209,19 +218,19 @@ export default {
             });
         },
         delete(id) {
-            axios.delete(this.$apiLaroute.route("usuarios.delete", { id: id }))
+            axios.delete(this.$apiLaroute.route("aparelhos.delete", { id: id }))
                 .then(response => {
                     this.refresh();
 
-                    this.$bvToast.toast("Usuário excluído com sucesso!", {
-                        title: "Exclusão de Usuários",
+                    this.$bvToast.toast("Aparelho excluído com sucesso!", {
+                        title: "Exclusão de Aparelho",
                         variant: "success",
                         solid: true
                     });
                 })
                 .catch(error => {
-                    this.$bvToast.toast("Não foi possível excluir o usuário.", {
-                        title: "Exclusão de Usuários",
+                    this.$bvToast.toast("Não foi possível excluir o aparelho.", {
+                        title: "Exclusão de Aparelho",
                         variant: "danger",
                         solid: true
                     });

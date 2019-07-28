@@ -1,7 +1,7 @@
 <template>
     <b-col md="12">
         <b-card
-            header="Lista de Usuários"
+            header="Lista de Perfis"
             header-tag="header"
             header-bg-variant="primary"
             header-text-variant="white"
@@ -12,7 +12,7 @@
                     @Cadastrar="cadastrar"
                 ></novo-registro>
 
-                <!-- Tabela Usuários -->
+                <!-- Tabela Perfis -->
                 <tabela
                     :refreshTable="refreshTable"
                     @editar="editar"
@@ -24,8 +24,9 @@
 
                     <!-- Formulário -->
                     <formulario
-                        :dadosForm="usuario"
+                        :dadosForm="perfil"
                         :responseForm="requestForm"
+                        :limparForm="limparForm"
                         @formulario="formulario"
                     ></formulario>
 
@@ -52,7 +53,7 @@ import Formulario from "../components/perfis/_Formulario";
 import Modal from "../components/Modal";
 
 export default {
-    name: "Usuarios",
+    name: "Perfis",
     components: {
         NovoRegistro,
         Tabela,
@@ -63,11 +64,12 @@ export default {
         return {
             refreshTable: false,
             requestForm: false,
+            limparForm: false,
             form: [],
-            usuario: [],
+            perfil: [],
             modal: {
-                id: "addUsuario",
-                title: "Cadastrar Usuário"
+                id: "",
+                title: ""
             },
         };
     },
@@ -85,6 +87,13 @@ export default {
                     this.requestForm = false;
                 }, 100);
             }
+        },
+        limparForm(value) {
+            if (value) {
+                setTimeout(() => {
+                    this.limparForm = false;
+                }, 100);
+            }
         }
     },
     methods: {
@@ -93,25 +102,25 @@ export default {
         },
         cadastrar() {
             this.modal = {
-                id: "addUsuario",
-                title: "Cadastrar Novo Usuário"
-            };
-
-            this.showModal(this.modal.id);
-        },
-        editar(usuario) {
-            this.modal = {
-                id: "editUsuario",
-                title: "Editar Usuário"
+                id: "addPerfil",
+                title: "Cadastrar Novo Perfil"
             };
             
-            this.usuario = usuario;
+            this.showModal(this.modal.id);
+        },
+        editar(perfil) {
+            this.modal = {
+                id: "editPerfil",
+                title: "Editar Perfil"
+            };
+            
+            this.perfil = perfil;
             
             this.showModal(this.modal.id);  
         },
-        excluir(usuario) {
+        excluir(perfil) {
             this.$swal({
-                title: `Excluir o usuário\n${usuario.name}?`,
+                title: `Excluir o perfil\n${perfil.nome}?`,
                 text: "Essa operação não poderá ser desfeita!",
                 type: 'warning',
                 showCancelButton: true,
@@ -121,7 +130,7 @@ export default {
                 cancelButtonText: 'Não'
             }).then((result) => {
                 if (result.value) {
-                    this.delete(usuario.id);
+                    this.delete(perfil.id);
                 }
             });
         },
@@ -132,7 +141,8 @@ export default {
         },
         closeModal() {
             this.$bvModal.hide(this.modal.id);
-            this.form = [];
+            this.limparForm = true;
+            this.perfil = [];
         },
         onSubmit() {
             this.requestForm = true;
@@ -156,19 +166,19 @@ export default {
                     return;
                 }
 
-                axios.post(this.$apiLaroute.route("usuarios.create"), this.prepareFormData())
+                axios.post(this.$apiLaroute.route("perfis.create"), this.prepareFormData())
                 .then(response => {
                     this.refresh();
 
-                    this.$bvToast.toast("Usuário cadastrado com sucesso!", {
-                        title: "Cadastro de Usuários",
+                    this.$bvToast.toast("Perfil cadastrado com sucesso!", {
+                        title: "Cadastro de Perfil",
                         variant: "success",
                         solid: true
                     });
                 })
                 .catch(error => {
-                    this.$bvToast.toast("Não foi possível cadastro o usuário.", {
-                        title: "Cadastro de Usuários",
+                    this.$bvToast.toast("Não foi possível cadastro o perfil.", {
+                        title: "Cadastro de Perfil",
                         variant: "danger",
                         solid: true
                     });
@@ -186,19 +196,19 @@ export default {
                 let formData = this.prepareFormData();
                     formData.append('_method', 'PUT');
 
-                axios.post(this.$apiLaroute.route("usuarios.update", { id: this.form.id }), formData)
+                axios.post(this.$apiLaroute.route("perfis.update", { id: this.form.id }), formData)
                 .then(response => {
                     this.refresh();
 
-                    this.$bvToast.toast("Usuário atualizado com sucesso!", {
-                        title: "Atualização de Usuários",
+                    this.$bvToast.toast("Perfil atualizado com sucesso!", {
+                        title: "Atualização de Perfil",
                         variant: "success",
                         solid: true
                     });
                 })
                 .catch(error => {
-                    this.$bvToast.toast("Não foi possível atualizar o usuário.", {
-                        title: "Atualização de Usuários",
+                    this.$bvToast.toast("Não foi possível atualizar o perfil.", {
+                        title: "Atualização de Perfil",
                         variant: "danger",
                         solid: true
                     });
@@ -208,19 +218,19 @@ export default {
             });
         },
         delete(id) {
-            axios.delete(this.$apiLaroute.route("usuarios.delete", { id: id }))
+            axios.delete(this.$apiLaroute.route("perfis.delete", { id: id }))
                 .then(response => {
                     this.refresh();
 
-                    this.$bvToast.toast("Usuário excluído com sucesso!", {
-                        title: "Exclusão de Usuários",
+                    this.$bvToast.toast("Perfil excluído com sucesso!", {
+                        title: "Exclusão de Perfil",
                         variant: "success",
                         solid: true
                     });
                 })
                 .catch(error => {
-                    this.$bvToast.toast("Não foi possível excluir o usuário.", {
-                        title: "Exclusão de Usuários",
+                    this.$bvToast.toast("Não foi possível excluir o perfil.", {
+                        title: "Exclusão de Perfil",
                         variant: "danger",
                         solid: true
                     });

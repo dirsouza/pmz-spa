@@ -4,25 +4,49 @@
             <!-- Id -->
             <input type="hidden" name="id" v-model="form.id">
 
-            <!-- Nome do Perfil -->
+            <!-- Código do Aparelho -->
             <b-col>
                 <b-form-group
-                    :invalid-feedback="veeErrors.first('perfil')"
-                    :state="!veeErrors.has('perfil')"
-                    id="nome-perfil"
-                    label="Nome do Perfil"
-                    label-for="perfil"
+                    :invalid-feedback="veeErrors.first('codigo')"
+                    :state="!veeErrors.has('codigo')"
+                    id="nome-codigo"
+                    label="Código"
+                    label-for="codigo"
                     label-class="mb-0"
                 >
                     <b-form-input 
-                        :state="veeErrors.has('perfil') ? false : form.nome ? true : false"
+                        :state="veeErrors.has('codigo') ? false : form.codigo ? true : false"
                         type="text"
-                        id="perfil" 
-                        name="perfil" 
-                        placeholder="Nome do Perfil" 
-                        v-model="form.nome"
-                        v-validate="'required|alpha_spaces'"
-                        data-vv-as="Nome do Perfil"
+                        id="codigo" 
+                        name="codigo" 
+                        placeholder="Código do Aparelho" 
+                        v-model="form.codigo"
+                        v-validate="'required|alpha_num'"
+                        data-vv-as="Código do Aparelho"
+                        trim
+                    ></b-form-input>
+                </b-form-group>
+            </b-col>
+
+            <!-- Descrição -->
+            <b-col md="9">
+                <b-form-group
+                    :invalid-feedback="veeErrors.first('descricao')"
+                    :state="!veeErrors.has('descricao')"
+                    id="nome-descricao"
+                    label="Descrição do Aparelho"
+                    label-for="descricao"
+                    label-class="mb-0"
+                >
+                    <b-form-input 
+                        :state="veeErrors.has('descricao') ? false : form.descricao ? true : false"
+                        type="text"
+                        id="descricao" 
+                        name="descricao" 
+                        placeholder="Descrição do Aparelho" 
+                        v-model="form.descricao"
+                        v-validate="'required'"
+                        data-vv-as="Descrição do Aparelho"
                         trim
                     ></b-form-input>
                 </b-form-group>
@@ -51,7 +75,7 @@
             </b-col>
         </b-row>
 
-        <span hidden>{{ getDadosPerfil }}</span>
+        <span hidden>{{ getDadosAparelho }}</span>
         <span hidden>{{ getResponseForm }}</span>
         <span hidden>{{ getLimparForm }}</span>
     </b-form>
@@ -61,7 +85,7 @@
 import Multiselect from "vue-multiselect";
 
 export default {
-    name: "FormularioPerfis",
+    name: "FormularioAparelhos",
     components: {
         Multiselect
     },
@@ -89,7 +113,7 @@ export default {
         this.getListaUsuarios();
     },
     computed: {
-        getDadosPerfil() {
+        getDadosAparelho() {
             if (Object.keys(this.dadosForm).length > 0) {
                 this.dadosEditar(this.dadosForm);
             }
@@ -116,16 +140,16 @@ export default {
 
                 this.selectOptions = response.data;
             } catch (e) {
-                this.$bvToast.toast("Não foi possível carregar os Usuários.", {
-                    title: "Usuários",
+                this.$bvToast.toast("Não foi possível carregar os Aparelhos.", {
+                    title: "Aparelhos",
                     variant: "danger",
                     solid: true
                 });
             }
         },
-        dadosEditar(perfil) {
+        dadosEditar(aparelho) {
             let usuarios = [];
-            perfil.usuarios.forEach(usuario => {
+            aparelho.usuarios.forEach(usuario => {
                 usuarios.push(...this.selectOptions.filter(opt => {
                     if (usuario.id === opt.id) {
                         return opt;
@@ -134,8 +158,9 @@ export default {
             });
 
             this.form = {
-                id: perfil.id,
-                nome: perfil.nome,
+                id: aparelho.id,
+                codigo: aparelho.codigo,
+                descricao: aparelho.descricao,
                 usuarios: usuarios
             };
         },

@@ -97,6 +97,7 @@
 
         <span hidden>{{ getDadosUsuario }}</span>
         <span hidden>{{ getResponseForm }}</span>
+        <span hidden>{{ getLimparForm }}</span>
     </b-form>
 </template>
 
@@ -114,6 +115,10 @@ export default {
             required: false
         },
         responseForm: {
+            type: Boolean,
+            required: false
+        },
+        limparForm: {
             type: Boolean,
             required: false
         }
@@ -136,6 +141,11 @@ export default {
         getResponseForm() {
             if (this.responseForm) {
                 this.$emit('formulario', this.form);
+            }
+        },
+        getLimparForm() {
+            if (this.limparForm) {
+                this.limparFormulario();
             }
         }
     },
@@ -175,6 +185,9 @@ export default {
                 status: usuario.status
             };
         },
+        limparFormulario() {
+            this.form = [];
+        }
     }
 }
 </script>

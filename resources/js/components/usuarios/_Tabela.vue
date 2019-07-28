@@ -45,6 +45,11 @@
             :sort-desc.sync="sortDesc"
             @filtered="onFiltered"
         >
+            <div slot="table-busy" class="text-center text-danger my-2">
+                <b-spinner class="align-middle"></b-spinner>
+                <strong>Loading...</strong>
+            </div>
+            
             <template slot="perfis" slot-scope="row">
                 <b-button variant="outline-primary" size="sm" v-if="row.item.perfis.length > 0" @click="row.toggleDetails">
                     <i v-if="row.detailsShowing" class="far fa-eye-slash"></i>
