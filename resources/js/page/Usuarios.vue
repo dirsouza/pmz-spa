@@ -13,21 +13,21 @@
                 ></novo-registro>
 
                 <!-- Tabela Usuários -->
-                <tabela-usuarios
+                <tabela
                     :refreshTable="refreshTable"
                     @editar="editar"
                     @excluir="excluir"
-                ></tabela-usuarios>
+                ></tabela>
 
                 <!-- Modal -->
                 <modal :id="modal.id" :title="modal.title" @closeModal="closeModal">
 
                     <!-- Formulário -->
-                    <formulario-usuarios
+                    <formulario
                         :dadosForm="usuario"
                         :responseForm="requestForm"
                         @formulario="formulario"
-                    ></formulario-usuarios>
+                    ></formulario>
 
                     <template slot="footer">
                         <b-button variant="light" @click="closeModal">
@@ -46,17 +46,17 @@
 </template>
 
 <script>
-import NovoRegistro from "../components/usuarios/_NovoRegistro";
-import TabelaUsuarios from "../components/usuarios/_TabelaUsuarios";
-import FormularioUsuarios from "../components/usuarios/_FormularioUsuarios";
+import NovoRegistro from "../components/NovoRegistro";
+import Tabela from "../components/usuarios/_Tabela";
+import Formulario from "../components/usuarios/_Formulario";
 import Modal from "../components/Modal";
 
 export default {
     name: "Usuarios",
     components: {
         NovoRegistro,
-        TabelaUsuarios,
-        FormularioUsuarios,
+        Tabela,
+        Formulario,
         Modal
     },
     data() {

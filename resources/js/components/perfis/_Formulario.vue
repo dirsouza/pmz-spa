@@ -110,7 +110,7 @@ export default {
     },
     props: {
         dadosForm: {
-            type: Object,
+            type: [Object, Array],
             required: false
         },
         responseForm: {
