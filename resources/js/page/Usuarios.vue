@@ -101,7 +101,31 @@ export default {
             this.showModal(this.modal.id);
         },
         relatorio() {
+            axios.get(this.$apiLaroute.route("usuarios.relatorio"), {
+                responseType: 'blob'
+            })
+            .then(response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
 
+                link.href = url;
+                link.setAttribute('download', 'RelUsuarios.pdf');
+                document.body.appendChild(link);
+                link.click();
+
+                this.$bvToast.toast("Relatório de usuários gerado com sucesso!", {
+                    title: "Lista de Usuários",
+                    variant: "success",
+                    solid: true
+                });
+            })
+            .catch(error => {
+                this.$bvToast.toast("Não foi possível gerar o relatório de usuários.", {
+                    title: "Lista de Usuários",
+                    variant: "danger",
+                    solid: true
+                });
+            });
         },
         editar(usuario) {
             this.modal = {

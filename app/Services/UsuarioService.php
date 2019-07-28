@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use Throwable;
+use App\Models\User;
+use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -101,5 +102,40 @@ class UsuarioService
     }
 
     public function relatorioUsuario()
-    { }
+    {
+        // Criar Relatório
+        $fpdf = new Fpdf('P', 'pt', 'A4');
+        $fpdf->AddPage();
+
+        // Título do Relatório
+        $fpdf->SetFont('Arial', 'B', 18);
+        $fpdf->Cell(0, 5, $this->convertText('Relatório de Usuários'), 0, 1, 'C');
+        $fpdf->Cell(0, 5, '', 'B', 1, 'C');
+        $fpdf->Ln(10);
+
+        // Cabeção do Relatório
+        $fpdf->SetFont('Arial', 'B', 14);
+        $fpdf->Cell(80, 20, $this->convertText('Código'), 1, 0, 'C');
+        $fpdf->Cell(208, 20, 'Nome', 1, 0, 'L');
+        $fpdf->Cell(200, 20, 'Email', 1, 0, 'L');
+        $fpdf->Cell(0, 20, 'Status', 1, 1, 'C');
+
+        // Linhas do Relatório
+        $fpdf->SetFont('Arial', '', 12);
+        foreach (User::orderBy('id', 'asc')->get() as $user) {
+            $fpdf->Cell(80, 20, $user->id, 1, 0, 'C');
+            $fpdf->Cell(208, 20, $this->convertText($user->name), 1, 0, 'L');
+            $fpdf->Cell(200, 20, $user->email, 1, 0, 'L');
+            $fpdf->Cell(0, 20, $user->status ? 'Ativo' : 'Inativo', 1, 1, 'C');
+        }
+
+        $fpdf->Output('F', 'RelUsuarios.pdf', true);
+
+        return response()->file('RelUsuarios.pdf');
+    }
+
+    private function convertText(string $text)
+    {
+        return mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
+    }
 }

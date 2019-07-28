@@ -110,7 +110,31 @@ export default {
             this.showModal(this.modal.id);
         },
         relatorio() {
+            axios.get(this.$apiLaroute.route("perfis.relatorio"), {
+                responseType: 'blob'
+            })
+            .then(response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
 
+                link.href = url;
+                link.setAttribute('download', 'RelPerfis.pdf');
+                document.body.appendChild(link);
+                link.click();
+
+                this.$bvToast.toast("Relatório de perfis gerado com sucesso!", {
+                    title: "Lista de Perfis",
+                    variant: "success",
+                    solid: true
+                });
+            })
+            .catch(error => {
+                this.$bvToast.toast("Não foi possível gerar o relatório de perfis.", {
+                    title: "Lista de Perfis",
+                    variant: "danger",
+                    solid: true
+                });
+            });
         },
         editar(perfil) {
             this.modal = {

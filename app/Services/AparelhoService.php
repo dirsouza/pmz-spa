@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Aparelho;
 use Throwable;
+use App\Models\Aparelho;
+use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -95,6 +96,37 @@ class AparelhoService
         }
     }
 
-    public function relatorioAparelho()
-    { }
+    public function relatorioAparalho()
+    {
+        // Criar Relatório
+        $fpdf = new Fpdf('L', 'pt', 'A4');
+        $fpdf->AddPage();
+
+        // Título do Relatório
+        $fpdf->SetFont('Arial', 'B', 18);
+        $fpdf->Cell(0, 5, $this->convertText('Relatório de Aparelhos'), 0, 1, 'C');
+        $fpdf->Cell(0, 5, '', 'B', 1, 'C');
+        $fpdf->Ln(10);
+
+        // Cabeção do Relatório
+        $fpdf->SetFont('Arial', 'B', 14);
+        $fpdf->Cell(80, 20, $this->convertText('Código'), 1, 0, 'C');
+        $fpdf->Cell(0, 20, $this->convertText('Descrição'), 1, 1, 'L');
+
+        // Linhas do Relatório
+        $fpdf->SetFont('Arial', '', 12);
+        foreach (Aparelho::orderBy('id', 'asc')->get() as $aparelho) {
+            $fpdf->Cell(80, 20, $aparelho->codigo, 1, 0, 'C');
+            $fpdf->Cell(0, 20, $this->convertText($aparelho->descricao), 1, 1, 'L');
+        }
+
+        $fpdf->Output('F', 'RelAparelhos.pdf', true);
+
+        return response()->file('RelAparelhos.pdf');
+    }
+
+    private function convertText(string $text)
+    {
+        return mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
+    }
 }

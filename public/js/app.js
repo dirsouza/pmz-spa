@@ -3446,7 +3446,32 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       };
       this.showModal(this.modal.id);
     },
-    relatorio: function relatorio() {},
+    relatorio: function relatorio() {
+      var _this4 = this;
+
+      axios.get(this.$apiLaroute.route("aparelhos.relatorio"), {
+        responseType: 'blob'
+      }).then(function (response) {
+        var url = window.URL.createObjectURL(new Blob([response.data]));
+        var link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'RelAparelhos.pdf');
+        document.body.appendChild(link);
+        link.click();
+
+        _this4.$bvToast.toast("Relatório de aparelhos gerado com sucesso!", {
+          title: "Lista de Aparelhos",
+          variant: "success",
+          solid: true
+        });
+      })["catch"](function (error) {
+        _this4.$bvToast.toast("Não foi possível gerar o relatório de aparelhos.", {
+          title: "Lista de Aparelhos",
+          variant: "danger",
+          solid: true
+        });
+      });
+    },
     editar: function editar(aparelho) {
       this.modal = {
         id: "editAparelho",
@@ -3456,7 +3481,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       this.showModal(this.modal.id);
     },
     excluir: function excluir(aparelho) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.$swal({
         title: "Excluir o aparelho\nc\xF3digo: ".concat(aparelho.codigo, "?"),
@@ -3469,15 +3494,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         cancelButtonText: 'Não'
       }).then(function (result) {
         if (result.value) {
-          _this4["delete"](aparelho.id);
+          _this5["delete"](aparelho.id);
         }
       });
     },
     showModal: function showModal(id) {
-      var _this5 = this;
+      var _this6 = this;
 
       setTimeout(function () {
-        _this5.$bvModal.show(id);
+        _this6.$bvModal.show(id);
       }, 100);
     },
     closeModal: function closeModal() {
@@ -3486,49 +3511,22 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       this.aparelho = [];
     },
     onSubmit: function onSubmit() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.requestForm = true;
       var setForm = setInterval(function () {
-        if (_this6.form.length > 0 || Object.keys(_this6.form).length > 0) {
+        if (_this7.form.length > 0 || Object.keys(_this7.form).length > 0) {
           clearInterval(setForm);
 
-          if (_this6.form.hasOwnProperty('id')) {
-            return _this6.update();
+          if (_this7.form.hasOwnProperty('id')) {
+            return _this7.update();
           }
 
-          return _this6.create();
+          return _this7.create();
         }
       }, 10);
     },
     create: function create() {
-      var _this7 = this;
-
-      this.$validator.validateAll().then(function (result) {
-        if (!result) {
-          return;
-        }
-
-        axios.post(_this7.$apiLaroute.route("aparelhos.create"), _this7.prepareFormData()).then(function (response) {
-          _this7.refresh();
-
-          _this7.$bvToast.toast("Aparelho cadastrado com sucesso!", {
-            title: "Cadastro de Aparelho",
-            variant: "success",
-            solid: true
-          });
-        })["catch"](function (error) {
-          _this7.$bvToast.toast("Não foi possível cadastro o aparelho.", {
-            title: "Cadastro de Aparelho",
-            variant: "danger",
-            solid: true
-          });
-        });
-
-        _this7.closeModal();
-      });
-    },
-    update: function update() {
       var _this8 = this;
 
       this.$validator.validateAll().then(function (result) {
@@ -3536,22 +3534,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return;
         }
 
-        var formData = _this8.prepareFormData();
-
-        formData.append('_method', 'PUT');
-        axios.post(_this8.$apiLaroute.route("aparelhos.update", {
-          id: _this8.form.id
-        }), formData).then(function (response) {
+        axios.post(_this8.$apiLaroute.route("aparelhos.create"), _this8.prepareFormData()).then(function (response) {
           _this8.refresh();
 
-          _this8.$bvToast.toast("Aparelho atualizado com sucesso!", {
-            title: "Atualização de Aparelho",
+          _this8.$bvToast.toast("Aparelho cadastrado com sucesso!", {
+            title: "Cadastro de Aparelho",
             variant: "success",
             solid: true
           });
         })["catch"](function (error) {
-          _this8.$bvToast.toast("Não foi possível atualizar o aparelho.", {
-            title: "Atualização de Aparelho",
+          _this8.$bvToast.toast("Não foi possível cadastro o aparelho.", {
+            title: "Cadastro de Aparelho",
             variant: "danger",
             solid: true
           });
@@ -3560,21 +3553,53 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         _this8.closeModal();
       });
     },
-    "delete": function _delete(id) {
+    update: function update() {
       var _this9 = this;
+
+      this.$validator.validateAll().then(function (result) {
+        if (!result) {
+          return;
+        }
+
+        var formData = _this9.prepareFormData();
+
+        formData.append('_method', 'PUT');
+        axios.post(_this9.$apiLaroute.route("aparelhos.update", {
+          id: _this9.form.id
+        }), formData).then(function (response) {
+          _this9.refresh();
+
+          _this9.$bvToast.toast("Aparelho atualizado com sucesso!", {
+            title: "Atualização de Aparelho",
+            variant: "success",
+            solid: true
+          });
+        })["catch"](function (error) {
+          _this9.$bvToast.toast("Não foi possível atualizar o aparelho.", {
+            title: "Atualização de Aparelho",
+            variant: "danger",
+            solid: true
+          });
+        });
+
+        _this9.closeModal();
+      });
+    },
+    "delete": function _delete(id) {
+      var _this10 = this;
 
       axios["delete"](this.$apiLaroute.route("aparelhos.delete", {
         id: id
       })).then(function (response) {
-        _this9.refresh();
+        _this10.refresh();
 
-        _this9.$bvToast.toast("Aparelho excluído com sucesso!", {
+        _this10.$bvToast.toast("Aparelho excluído com sucesso!", {
           title: "Exclusão de Aparelho",
           variant: "success",
           solid: true
         });
       })["catch"](function (error) {
-        _this9.$bvToast.toast("Não foi possível excluir o aparelho.", {
+        _this10.$bvToast.toast("Não foi possível excluir o aparelho.", {
           title: "Exclusão de Aparelho",
           variant: "danger",
           solid: true
@@ -3582,16 +3607,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       });
     },
     prepareFormData: function prepareFormData() {
-      var _this10 = this;
+      var _this11 = this;
 
       var formData = new FormData();
       Object.keys(this.form).forEach(function (key) {
-        if (_typeof(_this10.form[key]) === "object") {
-          _this10.form[key].forEach(function (obj) {
+        if (_typeof(_this11.form[key]) === "object") {
+          _this11.form[key].forEach(function (obj) {
             formData.append("".concat(key, "[]"), obj.id);
           });
         } else {
-          formData.append(key, _this10.form[key]);
+          formData.append(key, _this11.form[key]);
         }
       });
       return formData;
@@ -3733,7 +3758,32 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       };
       this.showModal(this.modal.id);
     },
-    relatorio: function relatorio() {},
+    relatorio: function relatorio() {
+      var _this4 = this;
+
+      axios.get(this.$apiLaroute.route("perfis.relatorio"), {
+        responseType: 'blob'
+      }).then(function (response) {
+        var url = window.URL.createObjectURL(new Blob([response.data]));
+        var link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'RelPerfis.pdf');
+        document.body.appendChild(link);
+        link.click();
+
+        _this4.$bvToast.toast("Relatório de perfis gerado com sucesso!", {
+          title: "Lista de Perfis",
+          variant: "success",
+          solid: true
+        });
+      })["catch"](function (error) {
+        _this4.$bvToast.toast("Não foi possível gerar o relatório de perfis.", {
+          title: "Lista de Perfis",
+          variant: "danger",
+          solid: true
+        });
+      });
+    },
     editar: function editar(perfil) {
       this.modal = {
         id: "editPerfil",
@@ -3743,7 +3793,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       this.showModal(this.modal.id);
     },
     excluir: function excluir(perfil) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.$swal({
         title: "Excluir o perfil\n".concat(perfil.nome, "?"),
@@ -3756,15 +3806,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         cancelButtonText: 'Não'
       }).then(function (result) {
         if (result.value) {
-          _this4["delete"](perfil.id);
+          _this5["delete"](perfil.id);
         }
       });
     },
     showModal: function showModal(id) {
-      var _this5 = this;
+      var _this6 = this;
 
       setTimeout(function () {
-        _this5.$bvModal.show(id);
+        _this6.$bvModal.show(id);
       }, 100);
     },
     closeModal: function closeModal() {
@@ -3773,49 +3823,22 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       this.perfil = [];
     },
     onSubmit: function onSubmit() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.requestForm = true;
       var setForm = setInterval(function () {
-        if (_this6.form.length > 0 || Object.keys(_this6.form).length > 0) {
+        if (_this7.form.length > 0 || Object.keys(_this7.form).length > 0) {
           clearInterval(setForm);
 
-          if (_this6.form.hasOwnProperty('id')) {
-            return _this6.update();
+          if (_this7.form.hasOwnProperty('id')) {
+            return _this7.update();
           }
 
-          return _this6.create();
+          return _this7.create();
         }
       }, 10);
     },
     create: function create() {
-      var _this7 = this;
-
-      this.$validator.validateAll().then(function (result) {
-        if (!result) {
-          return;
-        }
-
-        axios.post(_this7.$apiLaroute.route("perfis.create"), _this7.prepareFormData()).then(function (response) {
-          _this7.refresh();
-
-          _this7.$bvToast.toast("Perfil cadastrado com sucesso!", {
-            title: "Cadastro de Perfil",
-            variant: "success",
-            solid: true
-          });
-        })["catch"](function (error) {
-          _this7.$bvToast.toast("Não foi possível cadastro o perfil.", {
-            title: "Cadastro de Perfil",
-            variant: "danger",
-            solid: true
-          });
-        });
-
-        _this7.closeModal();
-      });
-    },
-    update: function update() {
       var _this8 = this;
 
       this.$validator.validateAll().then(function (result) {
@@ -3823,22 +3846,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return;
         }
 
-        var formData = _this8.prepareFormData();
-
-        formData.append('_method', 'PUT');
-        axios.post(_this8.$apiLaroute.route("perfis.update", {
-          id: _this8.form.id
-        }), formData).then(function (response) {
+        axios.post(_this8.$apiLaroute.route("perfis.create"), _this8.prepareFormData()).then(function (response) {
           _this8.refresh();
 
-          _this8.$bvToast.toast("Perfil atualizado com sucesso!", {
-            title: "Atualização de Perfil",
+          _this8.$bvToast.toast("Perfil cadastrado com sucesso!", {
+            title: "Cadastro de Perfil",
             variant: "success",
             solid: true
           });
         })["catch"](function (error) {
-          _this8.$bvToast.toast("Não foi possível atualizar o perfil.", {
-            title: "Atualização de Perfil",
+          _this8.$bvToast.toast("Não foi possível cadastro o perfil.", {
+            title: "Cadastro de Perfil",
             variant: "danger",
             solid: true
           });
@@ -3847,21 +3865,53 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         _this8.closeModal();
       });
     },
-    "delete": function _delete(id) {
+    update: function update() {
       var _this9 = this;
+
+      this.$validator.validateAll().then(function (result) {
+        if (!result) {
+          return;
+        }
+
+        var formData = _this9.prepareFormData();
+
+        formData.append('_method', 'PUT');
+        axios.post(_this9.$apiLaroute.route("perfis.update", {
+          id: _this9.form.id
+        }), formData).then(function (response) {
+          _this9.refresh();
+
+          _this9.$bvToast.toast("Perfil atualizado com sucesso!", {
+            title: "Atualização de Perfil",
+            variant: "success",
+            solid: true
+          });
+        })["catch"](function (error) {
+          _this9.$bvToast.toast("Não foi possível atualizar o perfil.", {
+            title: "Atualização de Perfil",
+            variant: "danger",
+            solid: true
+          });
+        });
+
+        _this9.closeModal();
+      });
+    },
+    "delete": function _delete(id) {
+      var _this10 = this;
 
       axios["delete"](this.$apiLaroute.route("perfis.delete", {
         id: id
       })).then(function (response) {
-        _this9.refresh();
+        _this10.refresh();
 
-        _this9.$bvToast.toast("Perfil excluído com sucesso!", {
+        _this10.$bvToast.toast("Perfil excluído com sucesso!", {
           title: "Exclusão de Perfil",
           variant: "success",
           solid: true
         });
       })["catch"](function (error) {
-        _this9.$bvToast.toast("Não foi possível excluir o perfil.", {
+        _this10.$bvToast.toast("Não foi possível excluir o perfil.", {
           title: "Exclusão de Perfil",
           variant: "danger",
           solid: true
@@ -3869,16 +3919,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       });
     },
     prepareFormData: function prepareFormData() {
-      var _this10 = this;
+      var _this11 = this;
 
       var formData = new FormData();
       Object.keys(this.form).forEach(function (key) {
-        if (_typeof(_this10.form[key]) === "object") {
-          _this10.form[key].forEach(function (obj) {
+        if (_typeof(_this11.form[key]) === "object") {
+          _this11.form[key].forEach(function (obj) {
             formData.append("".concat(key, "[]"), obj.id);
           });
         } else {
-          formData.append(key, _this10.form[key]);
+          formData.append(key, _this11.form[key]);
         }
       });
       return formData;
@@ -4009,7 +4059,32 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       };
       this.showModal(this.modal.id);
     },
-    relatorio: function relatorio() {},
+    relatorio: function relatorio() {
+      var _this3 = this;
+
+      axios.get(this.$apiLaroute.route("usuarios.relatorio"), {
+        responseType: 'blob'
+      }).then(function (response) {
+        var url = window.URL.createObjectURL(new Blob([response.data]));
+        var link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'RelUsuarios.pdf');
+        document.body.appendChild(link);
+        link.click();
+
+        _this3.$bvToast.toast("Relatório de usuários gerado com sucesso!", {
+          title: "Lista de Usuários",
+          variant: "success",
+          solid: true
+        });
+      })["catch"](function (error) {
+        _this3.$bvToast.toast("Não foi possível gerar o relatório de usuários.", {
+          title: "Lista de Usuários",
+          variant: "danger",
+          solid: true
+        });
+      });
+    },
     editar: function editar(usuario) {
       this.modal = {
         id: "editUsuario",
@@ -4019,7 +4094,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       this.showModal(this.modal.id);
     },
     excluir: function excluir(usuario) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$swal({
         title: "Excluir o usu\xE1rio\n".concat(usuario.name, "?"),
@@ -4032,15 +4107,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         cancelButtonText: 'Não'
       }).then(function (result) {
         if (result.value) {
-          _this3["delete"](usuario.id);
+          _this4["delete"](usuario.id);
         }
       });
     },
     showModal: function showModal(id) {
-      var _this4 = this;
+      var _this5 = this;
 
       setTimeout(function () {
-        _this4.$bvModal.show(id);
+        _this5.$bvModal.show(id);
       }, 100);
     },
     closeModal: function closeModal() {
@@ -4049,49 +4124,22 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       this.usuario = [];
     },
     onSubmit: function onSubmit() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.requestForm = true;
       var setForm = setInterval(function () {
-        if (_this5.form.length > 0 || Object.keys(_this5.form).length > 0) {
+        if (_this6.form.length > 0 || Object.keys(_this6.form).length > 0) {
           clearInterval(setForm);
 
-          if (_this5.form.hasOwnProperty('id')) {
-            return _this5.update();
+          if (_this6.form.hasOwnProperty('id')) {
+            return _this6.update();
           }
 
-          return _this5.create();
+          return _this6.create();
         }
       }, 10);
     },
     create: function create() {
-      var _this6 = this;
-
-      this.$validator.validateAll().then(function (result) {
-        if (!result) {
-          return;
-        }
-
-        axios.post(_this6.$apiLaroute.route("usuarios.create"), _this6.prepareFormData()).then(function (response) {
-          _this6.refresh();
-
-          _this6.$bvToast.toast("Usuário cadastrado com sucesso!", {
-            title: "Cadastro de Usuários",
-            variant: "success",
-            solid: true
-          });
-        })["catch"](function (error) {
-          _this6.$bvToast.toast("Não foi possível cadastro o usuário.", {
-            title: "Cadastro de Usuários",
-            variant: "danger",
-            solid: true
-          });
-        });
-
-        _this6.closeModal();
-      });
-    },
-    update: function update() {
       var _this7 = this;
 
       this.$validator.validateAll().then(function (result) {
@@ -4099,22 +4147,17 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           return;
         }
 
-        var formData = _this7.prepareFormData();
-
-        formData.append('_method', 'PUT');
-        axios.post(_this7.$apiLaroute.route("usuarios.update", {
-          id: _this7.form.id
-        }), formData).then(function (response) {
+        axios.post(_this7.$apiLaroute.route("usuarios.create"), _this7.prepareFormData()).then(function (response) {
           _this7.refresh();
 
-          _this7.$bvToast.toast("Usuário atualizado com sucesso!", {
-            title: "Atualização de Usuários",
+          _this7.$bvToast.toast("Usuário cadastrado com sucesso!", {
+            title: "Cadastro de Usuários",
             variant: "success",
             solid: true
           });
         })["catch"](function (error) {
-          _this7.$bvToast.toast("Não foi possível atualizar o usuário.", {
-            title: "Atualização de Usuários",
+          _this7.$bvToast.toast("Não foi possível cadastro o usuário.", {
+            title: "Cadastro de Usuários",
             variant: "danger",
             solid: true
           });
@@ -4123,21 +4166,53 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         _this7.closeModal();
       });
     },
-    "delete": function _delete(id) {
+    update: function update() {
       var _this8 = this;
+
+      this.$validator.validateAll().then(function (result) {
+        if (!result) {
+          return;
+        }
+
+        var formData = _this8.prepareFormData();
+
+        formData.append('_method', 'PUT');
+        axios.post(_this8.$apiLaroute.route("usuarios.update", {
+          id: _this8.form.id
+        }), formData).then(function (response) {
+          _this8.refresh();
+
+          _this8.$bvToast.toast("Usuário atualizado com sucesso!", {
+            title: "Atualização de Usuários",
+            variant: "success",
+            solid: true
+          });
+        })["catch"](function (error) {
+          _this8.$bvToast.toast("Não foi possível atualizar o usuário.", {
+            title: "Atualização de Usuários",
+            variant: "danger",
+            solid: true
+          });
+        });
+
+        _this8.closeModal();
+      });
+    },
+    "delete": function _delete(id) {
+      var _this9 = this;
 
       axios["delete"](this.$apiLaroute.route("usuarios.delete", {
         id: id
       })).then(function (response) {
-        _this8.refresh();
+        _this9.refresh();
 
-        _this8.$bvToast.toast("Usuário excluído com sucesso!", {
+        _this9.$bvToast.toast("Usuário excluído com sucesso!", {
           title: "Exclusão de Usuários",
           variant: "success",
           solid: true
         });
       })["catch"](function (error) {
-        _this8.$bvToast.toast("Não foi possível excluir o usuário.", {
+        _this9.$bvToast.toast("Não foi possível excluir o usuário.", {
           title: "Exclusão de Usuários",
           variant: "danger",
           solid: true
@@ -4145,16 +4220,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       });
     },
     prepareFormData: function prepareFormData() {
-      var _this9 = this;
+      var _this10 = this;
 
       var formData = new FormData();
       Object.keys(this.form).forEach(function (key) {
-        if (_typeof(_this9.form[key]) === "object") {
-          _this9.form[key].forEach(function (obj) {
+        if (_typeof(_this10.form[key]) === "object") {
+          _this10.form[key].forEach(function (obj) {
             formData.append("".concat(key, "[]"), obj.id);
           });
         } else {
-          formData.append(key, _this9.form[key]);
+          formData.append(key, _this10.form[key]);
         }
       });
       return formData;
@@ -84454,7 +84529,7 @@ var render = function() {
           on: { click: _vm.relatorio }
         },
         [
-          _c("i", { staticClass: "fas fa-plus-circle fa-fw" }),
+          _c("i", { staticClass: "fas fa-file-pdf fa-fw" }),
           _vm._v("\n        Relatório\n    ")
         ]
       )

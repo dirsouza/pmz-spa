@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Perfil;
 use Throwable;
+use App\Models\Perfil;
+use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -91,5 +92,39 @@ class PerfilService
 
             return response()->json($e->getMessage(), 500);
         }
+    }
+
+    public function relatorioPerfil()
+    {
+        // Criar Relatório
+        $fpdf = new Fpdf('P', 'pt', 'A4');
+        $fpdf->AddPage();
+
+        // Título do Relatório
+        $fpdf->SetFont('Arial', 'B', 18);
+        $fpdf->Cell(0, 5, $this->convertText('Relatório de Perfis'), 0, 1, 'C');
+        $fpdf->Cell(0, 5, '', 'B', 1, 'C');
+        $fpdf->Ln(10);
+
+        // Cabeção do Relatório
+        $fpdf->SetFont('Arial', 'B', 14);
+        $fpdf->Cell(80, 20, $this->convertText('Código'), 1, 0, 'C');
+        $fpdf->Cell(0, 20, 'Nome', 1, 1, 'L');
+
+        // Linhas do Relatório
+        $fpdf->SetFont('Arial', '', 12);
+        foreach (Perfil::orderBy('id', 'asc')->get() as $perfil) {
+            $fpdf->Cell(80, 20, $perfil->id, 1, 0, 'C');
+            $fpdf->Cell(0, 20, $this->convertText($perfil->nome), 1, 1, 'L');
+        }
+
+        $fpdf->Output('F', 'RelPerfis.pdf', true);
+
+        return response()->file('RelPerfis.pdf');
+    }
+
+    private function convertText(string $text)
+    {
+        return mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
     }
 }

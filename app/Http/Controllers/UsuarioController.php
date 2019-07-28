@@ -61,6 +61,6 @@ class UsuarioController extends Controller
 
     public function relatorio()
     {
-        return $this->aparelhoService->relatorioUsuario();
+        return $this->usuarioService->relatorioUsuario();
     }
 }

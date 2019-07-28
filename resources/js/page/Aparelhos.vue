@@ -110,7 +110,31 @@ export default {
             this.showModal(this.modal.id);
         },
         relatorio() {
+            axios.get(this.$apiLaroute.route("aparelhos.relatorio"), {
+                responseType: 'blob'
+            })
+            .then(response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
 
+                link.href = url;
+                link.setAttribute('download', 'RelAparelhos.pdf');
+                document.body.appendChild(link);
+                link.click();
+
+                this.$bvToast.toast("Relatório de aparelhos gerado com sucesso!", {
+                    title: "Lista de Aparelhos",
+                    variant: "success",
+                    solid: true
+                });
+            })
+            .catch(error => {
+                this.$bvToast.toast("Não foi possível gerar o relatório de aparelhos.", {
+                    title: "Lista de Aparelhos",
+                    variant: "danger",
+                    solid: true
+                });
+            });
         },
         editar(aparelho) {
             this.modal = {

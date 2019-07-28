@@ -6,7 +6,7 @@
         </b-button>
     
         <b-button class="ml-1 mr-3" variant="secondary" size="sm" @click="relatorio">
-            <i class="fas fa-plus-circle fa-fw"></i>
+            <i class="fas fa-file-pdf fa-fw"></i>
             Relatório
         </b-button>
     </b-row>

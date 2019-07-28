@@ -15,12 +15,9 @@ class RelacionamentosSeeder extends Seeder
         $perfis = factory(\App\Models\Perfil::class, 5)->create();
         $aparelhos = factory(\App\Models\Aparelho::class, 100)->create();
 
-        foreach ($perfis as $perfi) {
-            $perfi->usuarios()->attach($usuarios->random()->id);
-        }
-
-        foreach ($aparelhos as $aparelho) {
-            $aparelho->usuarios()->attach($usuarios->random()->id);
+        foreach ($usuarios as $usuario) {
+            $usuario->perfis()->attach($perfis->random()->id);
+            $usuario->aparelhos()->attach($aparelhos->random()->id);
         }
     }
 }

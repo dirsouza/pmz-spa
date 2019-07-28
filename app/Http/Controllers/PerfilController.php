@@ -59,6 +59,6 @@ class PerfilController extends Controller
 
     public function relatorio()
     {
-        return $this->aparelhoService->relatorioPerfil();
+        return $this->perfilService->relatorioPerfil();
     }
 }
