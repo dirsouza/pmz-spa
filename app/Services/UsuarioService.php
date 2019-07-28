@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
-use App\Models\User;
+use App\Models\Usuario;
 use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,7 @@ class UsuarioService
     public function getListaUsuarios(): ?JsonResponse
     {
         try {
-            $usuarios = User::with('perfis')
+            $usuarios = Usuario::with('perfis')
                 ->orderBy('id', 'asc')->get();
 
             return response()->json($usuarios, 200);
@@ -36,7 +37,7 @@ class UsuarioService
         try {
             DB::beginTransaction();
 
-            $usuario = User::create([
+            $usuario = Usuario::create([
                 'name' => $dados['name'],
                 'email' => $dados['email'],
                 'status' => $dados['status']
@@ -59,7 +60,7 @@ class UsuarioService
         try {
             DB::beginTransaction();
 
-            $usuario = User::find($id);
+            $usuario = Usuario::find($id);
 
             $usuario->update([
                 'name' => $dados['name'],
@@ -84,7 +85,7 @@ class UsuarioService
         try {
             DB::beginTransaction();
 
-            $usuario = User::find($id);
+            $usuario = Usuario::find($id);
 
             $this->usuarioPerfilService->detachUsuarioPerfil($usuario);
             $this->usuarioAparelhoService->detachUsuarioAparelho($usuario);
@@ -101,7 +102,7 @@ class UsuarioService
         }
     }
 
-    public function relatorioUsuario()
+    public function relatorioUsuario(): ?BinaryFileResponse
     {
         // Criar Relatório
         $fpdf = new Fpdf('P', 'pt', 'A4');
@@ -122,11 +123,11 @@ class UsuarioService
 
         // Linhas do Relatório
         $fpdf->SetFont('Arial', '', 12);
-        foreach (User::orderBy('id', 'asc')->get() as $user) {
-            $fpdf->Cell(80, 20, $user->id, 1, 0, 'C');
-            $fpdf->Cell(208, 20, $this->convertText($user->name), 1, 0, 'L');
-            $fpdf->Cell(200, 20, $user->email, 1, 0, 'L');
-            $fpdf->Cell(0, 20, $user->status ? 'Ativo' : 'Inativo', 1, 1, 'C');
+        foreach (Usuario::orderBy('id', 'asc')->get() as $usuario) {
+            $fpdf->Cell(80, 20, $usuario->id, 1, 0, 'C');
+            $fpdf->Cell(208, 20, $this->convertText($usuario->name), 1, 0, 'L');
+            $fpdf->Cell(200, 20, $usuario->email, 1, 0, 'L');
+            $fpdf->Cell(0, 20, $usuario->status ? 'Ativo' : 'Inativo', 1, 1, 'C');
         }
 
         $fpdf->Output('F', 'RelUsuarios.pdf', true);
@@ -134,7 +135,7 @@ class UsuarioService
         return response()->file('RelUsuarios.pdf');
     }
 
-    private function convertText(string $text)
+    private function convertText(string $text): ?string
     {
         return mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
     }

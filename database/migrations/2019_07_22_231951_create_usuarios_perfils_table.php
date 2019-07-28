@@ -14,8 +14,8 @@ class CreateUsuariosPerfilsTable extends Migration
     public function up()
     {
         Schema::create('usuarios_perfis', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedInteger('usuario_id');
+            $table->foreign('usuario_id')->references('id')->on('usuarios');
             $table->unsignedInteger('perfil_id');
             $table->foreign('perfil_id')->references('id')->on('perfis');
         });

@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Models\Usuario;
 use App\Models\Perfil;
 
 class UsuarioPerfilService
 {
-    public function attachUsuarioPerfil(User $usuario, array $perfis): void
+    public function attachUsuarioPerfil(Usuario $usuario, array $perfis): void
     {
         $usuario->perfis()->sync($perfis);
     }
@@ -17,7 +17,7 @@ class UsuarioPerfilService
         $perfil->usuarios()->sync($usuarios);
     }
 
-    public function detachUsuarioPerfil(User $usuario): void
+    public function detachUsuarioPerfil(Usuario $usuario): void
     {
         $usuario->perfis()->detach();
     }

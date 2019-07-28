@@ -11,6 +11,6 @@ class Aparelho extends Model
 
     public function usuarios()
     {
-        return $this->belongsToMany(User::class, 'usuarios_aparelhos', 'aparelho_id', 'user_id');
+        return $this->belongsToMany(Usuario::class, 'usuarios_aparelhos', 'aparelho_id', 'usuario_id');
     }
 }

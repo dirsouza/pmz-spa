@@ -14,8 +14,8 @@ class CreateUsuariosAparelhosTable extends Migration
     public function up()
     {
         Schema::create('usuarios_aparelhos', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedInteger('usuario_id');
+            $table->foreign('usuario_id')->references('id')->on('usuarios');
             $table->unsignedInteger('aparelho_id');
             $table->foreign('aparelho_id')->references('id')->on('aparelhos');
         });

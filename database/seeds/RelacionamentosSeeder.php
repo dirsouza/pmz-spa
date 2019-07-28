@@ -11,7 +11,7 @@ class RelacionamentosSeeder extends Seeder
      */
     public function run()
     {
-        $usuarios = factory(\App\Models\User::class, 50)->create();
+        $usuarios = factory(\App\Models\Usuario::class, 50)->create();
         $perfis = factory(\App\Models\Perfil::class, 5)->create();
         $aparelhos = factory(\App\Models\Aparelho::class, 100)->create();
 

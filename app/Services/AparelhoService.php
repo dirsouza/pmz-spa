@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 use App\Models\Aparelho;
 use Codedge\Fpdf\Fpdf\Fpdf;
@@ -96,7 +97,7 @@ class AparelhoService
         }
     }
 
-    public function relatorioAparalho()
+    public function relatorioAparalho(): ?BinaryFileResponse
     {
         // Criar Relatório
         $fpdf = new Fpdf('L', 'pt', 'A4');
@@ -125,7 +126,7 @@ class AparelhoService
         return response()->file('RelAparelhos.pdf');
     }
 
-    private function convertText(string $text)
+    private function convertText(string $text): ?string
     {
         return mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
     }

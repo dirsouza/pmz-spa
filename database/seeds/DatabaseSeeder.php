@@ -11,9 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         $this->call([
-             ExtensionsPostgresSeeder::class,
-             RelacionamentosSeeder::class
-         ]);
+         $this->call(RelacionamentosSeeder::class);
     }
 }

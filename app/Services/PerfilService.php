@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 use App\Models\Perfil;
 use Codedge\Fpdf\Fpdf\Fpdf;
@@ -94,7 +95,7 @@ class PerfilService
         }
     }
 
-    public function relatorioPerfil()
+    public function relatorioPerfil(): ?BinaryFileResponse
     {
         // Criar Relatório
         $fpdf = new Fpdf('P', 'pt', 'A4');
@@ -123,7 +124,7 @@ class PerfilService
         return response()->file('RelPerfis.pdf');
     }
 
-    private function convertText(string $text)
+    private function convertText(string $text): ?string
     {
         return mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
     }

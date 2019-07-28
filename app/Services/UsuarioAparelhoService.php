@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Models\Usuario;
 use App\Models\Aparelho;
 
 class UsuarioAparelhoService
@@ -17,7 +17,7 @@ class UsuarioAparelhoService
         $aparelho->usuarios()->detach();
     }
 
-    public function detachUsuarioAparelho(User $usuario): void
+    public function detachUsuarioAparelho(Usuario $usuario): void
     {
         $usuario->aparelhos()->detach();
     }
