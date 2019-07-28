@@ -44,7 +44,7 @@ class UsuarioService
                 'status' => $dados['status']
             ]);
 
-            $this->usuarioPerfilService->attachUsuarioPerfil($usuario, $dados['perfis']);
+            $this->usuarioPerfilService->attachUsuarioPerfil($usuario, $dados['perfis'] ?? []);
 
             DB::commit();
 
@@ -69,7 +69,7 @@ class UsuarioService
                 'status' => $dados['status']
             ]);
 
-            $this->usuarioPerfilService->attachUsuarioPerfil($usuario, $dados['perfis']);
+            $this->usuarioPerfilService->attachUsuarioPerfil($usuario, $dados['perfis'] ?? []);
 
             DB::commit();
 

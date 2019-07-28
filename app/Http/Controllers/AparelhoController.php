@@ -3,9 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\AparelhoService;
 
 class AparelhoController extends Controller
 {
+    private $aparelhoService;
+
+    public function __construct()
+    {
+        $this->aparelhoService = App()->make(AparelhoService::class);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +20,7 @@ class AparelhoController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return $this->aparelhoService->getListaAparelhos();
     }
 
     /**

@@ -8,7 +8,7 @@ class UsuarioPerfilService
 {
     public function attachUsuarioPerfil(User $usuario, array $perfis): void
     {
-        $usuario->perfis()->syncWithoutDetaching($perfis);
+        $usuario->perfis()->sync($perfis);
     }
 
     public function detachUsuarioPerfil(User $usuario): void

@@ -252,7 +252,7 @@ export default {
             items: [],
             fields: [
                 { key: "id", label: "Código", sortable: true, class: "text-center", sortDirection: "asc" },
-                { key: "name", label: "Nome Completo", sortable: true },
+                { key: "nome", label: "Nome Completo", sortable: true },
                 { key: "email", label: "E-mail", sortable: true },
                 { key: "perfis", label: "Perfis", sortable: true, filterable: true, class: "text-center" },
                 { key: "status", label: "Registro", sortable: true, filterable: false, class: "text-center" },

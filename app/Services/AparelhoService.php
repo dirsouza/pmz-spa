@@ -3,16 +3,22 @@
 namespace App\Services;
 
 use App\Models\Aparelho;
-use Illuminate\Support\Collection;
+use Illuminate\Http\JsonResponse;
 
 class AparelhoService
 {
-    /**
-     * Retorna todos os Aparelhos
-     * @return Collection|null
-     */
-    public function getAparelhos(): ?Collection
+    public function getListaAparelhos(): ?JsonResponse
     {
-        return Aparelho::orderBy('id', 'asc')->get();
+        try {
+            $aparelhos = Aparelho::with([
+                'usuarios' => function ($query) {
+                    $query->orderBy('perfil_id', 'asc');
+                }
+            ])->orderBy('id', 'asc')->get();
+
+            return response()->json($aparelhos, 200);
+        } catch (Throwable $e) {
+            return response()->json($e->getMessage(), 500);
+        }
     }
 }

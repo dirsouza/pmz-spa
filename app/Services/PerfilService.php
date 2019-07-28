@@ -11,7 +11,11 @@ class PerfilService
     public function getListaPerfis(): ?JsonResponse
     {
         try {
-            $perfis = Perfil::orderBy('id', 'asc')->get();
+            $perfis = Perfil::with([
+                'usuarios' => function ($query) {
+                    $query->orderBy('perfil_id', 'asc');
+                }
+            ])->orderBy('id', 'asc')->get();
 
             return response()->json($perfis, 200);
         } catch (Throwable $e) {
