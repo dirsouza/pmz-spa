@@ -1,7 +1,6 @@
 require('./bootstrap');
 
 import Vue from "vue";
-import Vuex from "vuex";
 import BootstrapVue from "bootstrap-vue";
 import VueLaroute from 'vue-laroute';
 import VeeValidate from 'vee-validate';
@@ -11,7 +10,6 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import App from "./layout/App";
 import validationMessages from 'vee-validate/dist/locale/pt_BR';
 
-Vue.use(Vuex);
 Vue.use(BootstrapVue);
 Vue.use(VueI18n);
 Vue.use(VueSweetalert2);
@@ -28,21 +26,17 @@ Vue.use(VeeValidate, {
     inject: true,
     fieldsBagName: 'veeFields',
     errorBagName: 'veeErrors',
-    i18nRootKey: 'vallidations',
+    i18nRootKey: 'validations',
     i18n,
     dictionary: {
         pt_BR: validationMessages
     }
 })
 
-import StoreData from "./store";
-const store = new Vuex.Store(StoreData);
-
 import router from './routes/routers'
 
 const app = new Vue({
     el: '#app',
     router,
-    store,
     ...App
 });
